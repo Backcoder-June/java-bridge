@@ -29,4 +29,8 @@ public class InputView {
     public String readGameCommand() {
         return null;
     }
+
+    public String readRetry() {
+        return Console.readLine();
+    }
 }

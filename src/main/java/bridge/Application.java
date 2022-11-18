@@ -4,33 +4,47 @@ import java.util.List;
 import java.util.Map;
 
 public class Application {
+    public static int tryCount = 1;
+    public static int updownCount = 0;
 
     public static void main(String[] args) {
         // TODO: 프로그램 구현
-        OutputView ov = new OutputView();
-        InputView iv = new InputView();
-        BridgeMaker bm = new BridgeMaker(new BridgeRandomNumberGenerator());
-        BridgeGame bg = new BridgeGame();
+        OutputView outputView = new OutputView();
+        InputView inputView = new InputView();
+        BridgeMaker bridgeMaker = new BridgeMaker(new BridgeRandomNumberGenerator());
+        BridgeGame bridgeGame = new BridgeGame();
 
-        ov.askBridgeSize();
-        int size = iv.readBridgeSize();
-        List<String> bridge = bm.makeBridge(size);
-        List<String> randomBridge = bm.getRandomBridge(size);
+        outputView.askBridgeSize();
+        int size = inputView.readBridgeSize();
+        List<String> bridge = bridgeMaker.makeBridge(size);
+        List<String> randomBridge = bridgeMaker.getRandomBridge(size);
 
-        Map<Integer, String> answerBridge = bm.makeAnswerBridge(bridge, randomBridge);
-
-        ov.askUpDown();
-        String updown = iv.readMoving();
-        bg.move(answerBridge, updown);
+        Map<Integer, String> answerBridge = bridgeMaker.makeAnswerBridge(bridge, randomBridge);
 
 
-
-
-
-
-
-
-
-
+        while (true) {
+            outputView.askUpDown();
+            String updown = inputView.readMoving();
+            Map<Integer, String> moveResult = bridgeGame.move(answerBridge, updown, updownCount);
+            Map<Integer, String> moveFinalResult = bridgeGame.failChecker(moveResult, updown, updownCount);
+            List<String> bridgeList = outputView.printMap(moveFinalResult, updownCount);
+            if (bridgeGame.breaker(bridgeList, updownCount, size) == 1) {
+                outputView.askRetry();
+                String readRetry = inputView.readRetry();
+                if (readRetry.equals("R")) {
+                    answerBridge = bridgeGame.retry(readRetry, bridge, randomBridge);
+                    continue;
+                }
+                if (readRetry.equals("Q")) {
+                    outputView.printResult(0,bridgeList);
+                    break;
+                }
+            }
+            if (bridgeGame.breaker(bridgeList, updownCount, size) == 2) {
+                outputView.printResult(1,bridgeList);
+                break;
+            }
+            updownCount++;
+        }
     }
 }

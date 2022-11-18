@@ -20,6 +20,8 @@ public class BridgeMaker {
      * @param size 다리의 길이
      * @return 입력받은 길이에 해당하는 다리 모양. 위 칸이면 "U", 아래 칸이면 "D"로 표현해야 한다.
      */
+
+
     public List<String> makeBridge(int size) {
         String eachLine = "[ ";
         for (int i = 0; i < size-1; i++) {
@@ -40,26 +42,40 @@ public class BridgeMaker {
         return randomBridge;
     }
 
-    public Map<Integer, String> makeAnswerBridge(List<String> bridge, List<String> randomBridge) {
+    public static Map<Integer, String> makeAnswerBridge(List<String> bridge, List<String> randomBridge) {
         Map<Integer, String> bridgeMap = convertListToMap(bridge);
         for (int i = 0; i < randomBridge.size(); i++) {
             if (randomBridge.get(i).equals("1")) {
-                bridgeMap.put(1, indexChanger(bridgeMap.get(1), i));
+                bridgeMap.put(1, indexBlankChanger(bridgeMap.get(1), i));
             }
             if (randomBridge.get(i).equals("0")) {
-                bridgeMap.put(0, indexChanger(bridgeMap.get(0), i));
+                bridgeMap.put(0, indexBlankChanger(bridgeMap.get(0), i));
             }
         }
         return bridgeMap;
     }
 
-    public String indexChanger(String eachLine, int index) {
+    public static String indexBlankChanger(String eachLine, int index) {
         char[] chars = eachLine.toCharArray();
         chars[index * 4 + 2] = ' ';
         return String.valueOf(chars);
     }
 
-    public Map<Integer, String> convertListToMap(List<String> bridge) {
+    public static String indexOXChanger(String eachLine, int index, String checker) {
+        char[] chars = eachLine.toCharArray();
+        if (checker.equals("O")) {
+            chars[index * 4 + 2] = 'O';
+        }
+        if (checker.equals("X")) {
+            chars[index * 4 + 2] = 'X';
+        }
+        return String.valueOf(chars);
+    }
+
+
+
+
+    public static Map<Integer, String> convertListToMap(List<String> bridge) {
         Map<Integer, String> bridgeMap = new HashMap<>();
         for (int i = 0; i < bridge.size(); i++) {
             bridgeMap.put(i, bridge.get(i));
