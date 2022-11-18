@@ -5,13 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * 다리의 길이를 입력 받아서 다리를 생성해주는 역할을 한다.
- */
 public class BridgeMaker {
-
     private final BridgeNumberGenerator bridgeNumberGenerator;
-
     public BridgeMaker(BridgeNumberGenerator bridgeNumberGenerator) {
         this.bridgeNumberGenerator = bridgeNumberGenerator;
     }
@@ -20,9 +15,21 @@ public class BridgeMaker {
      * @param size 다리의 길이
      * @return 입력받은 길이에 해당하는 다리 모양. 위 칸이면 "U", 아래 칸이면 "D"로 표현해야 한다.
      */
-
-
     public List<String> makeBridge(int size) {
+        List<String> bridgeList = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            String randomBridge = String.valueOf(new BridgeMaker(bridgeNumberGenerator).bridgeNumberGenerator.generate());
+            if (randomBridge.equals("1")) {
+                bridgeList.add("U");
+            }
+            if (randomBridge.equals("0")) {
+                bridgeList.add("D");
+            }
+        }
+        return bridgeList;
+    }
+
+    public List<String> makeBridgeForm(int size) {
         String eachLine = "[ ";
         for (int i = 0; i < size-1; i++) {
             eachLine += "U | ";
@@ -34,21 +41,14 @@ public class BridgeMaker {
         return bridge;
     }
 
-    public List<String> getRandomBridge(int size) {
-        List<String> randomBridge = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            randomBridge.add(String.valueOf(new BridgeMaker(bridgeNumberGenerator).bridgeNumberGenerator.generate()));
-        }
-        return randomBridge;
-    }
 
     public static Map<Integer, String> makeAnswerBridge(List<String> bridge, List<String> randomBridge) {
         Map<Integer, String> bridgeMap = convertListToMap(bridge);
         for (int i = 0; i < randomBridge.size(); i++) {
-            if (randomBridge.get(i).equals("1")) {
+            if (randomBridge.get(i).equals("U")) {
                 bridgeMap.put(1, indexBlankChanger(bridgeMap.get(1), i));
             }
-            if (randomBridge.get(i).equals("0")) {
+            if (randomBridge.get(i).equals("D")) {
                 bridgeMap.put(0, indexBlankChanger(bridgeMap.get(0), i));
             }
         }
@@ -72,9 +72,6 @@ public class BridgeMaker {
         return String.valueOf(chars);
     }
 
-
-
-
     public static Map<Integer, String> convertListToMap(List<String> bridge) {
         Map<Integer, String> bridgeMap = new HashMap<>();
         for (int i = 0; i < bridge.size(); i++) {
@@ -83,6 +80,4 @@ public class BridgeMaker {
         return bridgeMap;
     }
 
-
-//
 }

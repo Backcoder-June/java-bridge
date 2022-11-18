@@ -37,6 +37,9 @@ public class OutputView {
         return bridgeList;
     }
 
+    public void askRetry() {
+        System.out.println("게임을 다시 시도할지 여부를 입력해주세요. (재시도: R, 종료: Q)");
+    }
     /**
      * 게임의 최종 결과를 정해진 형식에 맞춰 출력한다.
      * <p>
@@ -51,13 +54,6 @@ public class OutputView {
             System.out.println("\n최종 게임 결과\n" + bridgeList.get(0) + "\n" + bridgeList.get(1)  +
                     "\n\n게임 성공 여부: 성공\n총 시도한 횟수: " + api.tryCount );
         }
-
     }
-
-    public void askRetry() {
-        System.out.println("게임을 다시 시도할지 여부를 입력해주세요. (재시도: R, 종료: Q)");
-    }
-
-
 
 }
